@@ -27,9 +27,7 @@ pub fn generate_key_pair() -> Result<Ed25519Keypair, JsValue> {
 }
 
 #[wasm_bindgen]
-pub fn ed25519_from_private_key(
-  private_key: &[u8],
-) -> Result<Ed25519Keypair, JsValue> {
+pub fn from_private_key(private_key: &[u8]) -> Result<Ed25519Keypair, JsValue> {
   if private_key.len() != SECRET_KEY_LENGTH {
     return Err(JsValue::from_str(
       "Invalid privateKey length, must be 32 bytes",
@@ -51,10 +49,7 @@ pub fn ed25519_from_private_key(
 }
 
 #[wasm_bindgen]
-pub fn ed25519_sign(
-  private_key: &[u8],
-  message: &[u8],
-) -> Result<Vec<u8>, JsValue> {
+pub fn sign(private_key: &[u8], message: &[u8]) -> Result<Vec<u8>, JsValue> {
   if private_key.len() != SECRET_KEY_LENGTH {
     return Err(JsValue::from_str(
       "Invalid privateKey length, must be 32 bytes",
@@ -68,7 +63,7 @@ pub fn ed25519_sign(
 }
 
 #[wasm_bindgen]
-pub fn ed25519_verify(
+pub fn verify(
   public_key: &[u8],
   message: &[u8],
   signature_buffer: &[u8],

@@ -3,14 +3,9 @@
 // deno-fmt-ignore-file
 
 export function generate_key_pair(): Ed25519Keypair;
-export function ed25519_from_private_key(
-  private_key: Uint8Array,
-): Ed25519Keypair;
-export function ed25519_sign(
-  private_key: Uint8Array,
-  message: Uint8Array,
-): Uint8Array;
-export function ed25519_verify(
+export function from_private_key(private_key: Uint8Array): Ed25519Keypair;
+export function sign(private_key: Uint8Array, message: Uint8Array): Uint8Array;
+export function verify(
   public_key: Uint8Array,
   message: Uint8Array,
   signature_buffer: Uint8Array,
