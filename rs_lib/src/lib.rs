@@ -1,8 +1,8 @@
 use ed25519::signature::SignerMut;
 use ed25519_dalek::{
-  Signature, SigningKey, VerifyingKey, PUBLIC_KEY_LENGTH, SECRET_KEY_LENGTH,
+  SecretKey, Signature, SigningKey, VerifyingKey, PUBLIC_KEY_LENGTH,
+  SECRET_KEY_LENGTH,
 };
-use rand::rngs::OsRng;
 use wasm_bindgen::prelude::*;
 
 // https://rustwasm.github.io/wasm-bindgen/reference/attributes/on-rust-exports/skip.html
@@ -16,8 +16,14 @@ pub struct Ed25519Keypair {
 
 #[wasm_bindgen]
 pub fn generate_key_pair() -> Result<Ed25519Keypair, JsValue> {
-  let mut csprng = OsRng;
-  let keypair = SigningKey::generate(&mut csprng);
+  // getrandom 0.3
+  // let num: u32 = getrandom::u32().unwrap();
+  // let mut secret_key_bytes: [u8; 32] = [0; 32]; // Initialize with zeroes
+  // secret_key_bytes[..4].copy_from_slice(&num.to_le_bytes()); // Copy u32 into the first 4 bytes
+  // let keypair = SigningKey::from_bytes(&secret_key_bytes);
+  let mut secret = SecretKey::default();
+  let _ = getrandom::getrandom(&mut secret);
+  let keypair = SigningKey::from_bytes(&secret);
   let secret = keypair.as_bytes().to_vec().into();
   let public = keypair.verifying_key().as_bytes().to_vec().into();
   Ok(Ed25519Keypair {
